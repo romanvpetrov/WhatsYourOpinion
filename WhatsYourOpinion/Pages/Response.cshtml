@@ -1,0 +1,47 @@
+﻿@page
+@model WhatsYourOpinion.Pages.ResponseModel
+@{
+}
+
+<div class="col-md-12">
+
+    @if (Model.RandomOpinion != null)
+    {
+        <div class="row">
+            <div class="col-md-8 offset-md-2 text-center">
+                <h3>Here is someone else's opinion on @Model.Topic.Title</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 offset-md-3 text-center">
+                <p class="h3 text-primary">
+                    @Model.RandomOpinion.Comment
+                </p>
+            </div>
+        </div>
+
+        @*<div class="col-md-6 offset-md-3 text-center">
+
+            Do you agree?
+
+            <input type="button" class="btn-primary" value="Yes" />
+            <input type="button" class="btn-primary" value="No" />
+            <input type="button" class="btn-primary" value="Partially" />
+
+            </div>*@
+
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-8 offset-md-2 text-center">
+                You are the first person to leave an opinion on this topic. Thank you!
+            </div>
+        </div>
+    }
+    <div class="row">
+        <div class="col-md-8 offset-md-2 text-center">
+            <a href="./" class="btn btn-primary">Leave another opinion</a>
+        </div>
+    </div>
+</div>
