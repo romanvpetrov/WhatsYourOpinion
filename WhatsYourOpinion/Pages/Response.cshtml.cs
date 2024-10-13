@@ -5,26 +5,19 @@ namespace Data.Pages
 {
     public class ResponseModel : PageModel
     {
-        public IOpinionRepository OpinionRepository { get; set; }
-        public ITopicRepository TopicRepository { get; set; }
         public string RandomOpinion { get; set; }
         public string Topic { get; set; }
 
-        public ResponseModel(IOpinionRepository opinionRepository, ITopicRepository topicRepository)
+        public ResponseModel()
         {
-            OpinionRepository = opinionRepository;
-            TopicRepository = topicRepository;
+
         }
 
-        public void OnGet(string topic)
+        public void OnGet(string topic, string randomOpinion)
         {
-            var opinionResponse = OpinionRepository.GetRandomOpinion(topic);
 
-            if (opinionResponse.Success)
-            {
-                RandomOpinion = opinionResponse.Value.Text;
-                Topic = opinionResponse.Value.Topic.Name;
-            }
+            RandomOpinion = randomOpinion;
+            Topic = topic;
         }
     }
 }

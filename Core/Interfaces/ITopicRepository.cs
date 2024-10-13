@@ -10,6 +10,7 @@ namespace Core.Interfaces
 {
     public interface ITopicRepository
     {
+        public Result AddTopic(string topicName);
         public Result<Topic> GetTopic(string topicName);
         public Result<IEnumerable<Topic>> GetAllTopics();
     }

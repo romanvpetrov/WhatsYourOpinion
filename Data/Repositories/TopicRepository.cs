@@ -39,5 +39,10 @@ namespace Data.Repositories
 
             return new Result<IEnumerable<Topic>>(true, new string[] { }, topics);
         }
+
+        public Result AddTopic(string topicName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

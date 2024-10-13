@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore.InMemory;
 using Microsoft.EntityFrameworkCore;
 using Core.Interfaces;
 using Data.Repositories;
+using Core.Services;
 
 namespace Data
 {
@@ -31,6 +32,7 @@ namespace Data
             services.AddRazorPages();
             services.AddScoped<IOpinionRepository, OpinionRepository>();
             services.AddScoped<ITopicRepository, TopicRepository>();
+            services.AddScoped<OpinionService>();
             services.AddDbContext<OpinionContext>(options => options.UseInMemoryDatabase("Opinions"), ServiceLifetime.Singleton);
             //services.AddDbContext<OpinionContext>(options => options.UseSqlServer(Configuration.GetConnectionString("OpinionDatabase")));
             services.AddMvc();

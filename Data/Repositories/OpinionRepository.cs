@@ -27,7 +27,7 @@ namespace Data.Repositories
             OpinionContext.Add(dataModel);
             int result = OpinionContext.SaveChanges();
 
-            if (result == 0)
+            if (result == 1)
                 return new Result(true, new string[] { });
             else
                 return new Result(false, new string[] { "Error adding opinion" });
@@ -55,7 +55,7 @@ namespace Data.Repositories
                 .Opinions
                 .Where(x => x.Topic.Id == topic.Id).ToList() : null;
 
-            if (topicOpinions != null)
+            if (topicOpinions != null && topicOpinions.Count() != 0)
             {
                 Random rand = new Random();
                 int toSkip = rand.Next(0, topicOpinions.Count());

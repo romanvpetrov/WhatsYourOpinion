@@ -4,28 +4,27 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Core.Interfaces;
 using Core.Entities;
+using Core.Services;
 
 namespace Data.Pages
 {
     public class AnswerModel : PageModel
     {
-        IOpinionRepository Repository { get; set; }
-        ITopicRepository TopicRepository { get; set; }
+        OpinionService OpinionService { get; set; }
 
         [BindProperty]
         public string Opinion { get; set; }
         [BindProperty]
         public string TopicName { get; set; }
 
-        public AnswerModel(IOpinionRepository repository, ITopicRepository topicRepository)
+        public AnswerModel(OpinionService opinionService)
         {
-            Repository = repository;
-            TopicRepository = topicRepository;
+            OpinionService = opinionService;
         }
 
         public void OnGet(string topic)
         {
-            var result = TopicRepository.GetTopic(topic);
+            var result = OpinionService.GetTopic(topic);
             if (result.Success)
             {
                 TopicName = result.Value.Name;
@@ -41,18 +40,15 @@ namespace Data.Pages
         {
             if (ModelState.IsValid)
             {
-                var topicResult = TopicRepository.GetTopic(TopicName);
+                var addOpinionResult = OpinionService.AddOpinion(Opinion, TopicName);
 
-                if (topicResult.Success) {
-                    Topic topic = topicResult.Value;
-                    var opinion = new Opinion(Opinion, topic);
-
-                    Repository.Add(opinion);
-                    return RedirectToPage("./Response", new { topic = topic.Name });
+                if (addOpinionResult.Success && addOpinionResult.ErrorMessages.Length > 0) {
+                    return RedirectToPage("./Response", new { topic = TopicName });
                 }
-
-                
-                
+                else if (addOpinionResult.Success)
+                {
+                    return RedirectToPage("./Response", new { topic = TopicName, randomOpinion = addOpinionResult.Value.Text });
+                }
             }
 
             return RedirectToPage("./Index");
