@@ -1,41 +1,29 @@
-using Microsoft.AspNetCore.Mvc;
+using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
-using System.Linq;
-using WhatsYourOpinion.Contexts;
-using WhatsYourOpinion.Models;
 
-namespace WhatsYourOpinion.Pages
+namespace Data.Pages
 {
     public class ResponseModel : PageModel
     {
-        public OpinionContext Context { get; set; }
-        public Opinion RandomOpinion { get; set; }
-        public Topic Topic { get; set; }
+        public IOpinionRepository OpinionRepository { get; set; }
+        public ITopicRepository TopicRepository { get; set; }
+        public string RandomOpinion { get; set; }
+        public string Topic { get; set; }
 
-        public ResponseModel(OpinionContext context)
+        public ResponseModel(IOpinionRepository opinionRepository, ITopicRepository topicRepository)
         {
-            Context = context;
+            OpinionRepository = opinionRepository;
+            TopicRepository = topicRepository;
         }
 
         public void OnGet(string topic)
         {
-            Topic = Context.Topics.Where(x => x.Title == topic).FirstOrDefault();
-            var topicOpinions = Topic != null ? 
-                Context
-                .Opinions
-                .Where(x => x.Topic.Id == Topic.Id).ToList() : null;
+            var opinionResponse = OpinionRepository.GetRandomOpinion(topic);
 
-            if (topicOpinions != null)
+            if (opinionResponse.Success)
             {
-                Random rand = new Random();
-                int toSkip = rand.Next(0, topicOpinions.Count());
-
-                RandomOpinion = topicOpinions.Skip(toSkip).FirstOrDefault();
-            }
-            else
-            {
-                RandomOpinion = null;
+                RandomOpinion = opinionResponse.Value.Text;
+                Topic = opinionResponse.Value.Topic.Name;
             }
         }
     }

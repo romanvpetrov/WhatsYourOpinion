@@ -3,29 +3,33 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using Core.Interfaces;
+using Core.Entities;
 using System.Linq;
-using System.Threading.Tasks;
-using WhatsYourOpinion.Contexts;
-using WhatsYourOpinion.Models;
 
-namespace WhatsYourOpinion.Pages
+namespace Data.Pages
 {
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        private readonly OpinionContext _opinionContext;
+        private readonly ITopicRepository TopicRepository;
 
         public List<Topic> Topics { get; set; }
 
-        public IndexModel(ILogger<IndexModel> logger, OpinionContext context)
+        public IndexModel(ILogger<IndexModel> logger, ITopicRepository topicRepository)
         {
             _logger = logger;
-            _opinionContext = context;
+            TopicRepository = topicRepository;
         }
 
         public void OnGet()
         {
-            Topics = _opinionContext.Topics.ToList();
+            var topicsResult = TopicRepository.GetAllTopics();
+            if (topicsResult.Success)
+            {
+                Topics = TopicRepository.GetAllTopics().Value.ToList();
+            }
+
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿@page
-@model WhatsYourOpinion.Pages.ResponseModel
+@model Data.Pages.ResponseModel
 @{
 }
 
@@ -9,13 +9,13 @@
     {
         <div class="row">
             <div class="col-md-8 offset-md-2 text-center">
-                <h3>Here is someone else's opinion on @Model.Topic.Title</h3>
+                <h3>Here is someone else's opinion on @Model.Topic</h3>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6 offset-md-3 text-center">
                 <p class="h3 text-primary">
-                    @Model.RandomOpinion.Comment
+                    @Model.RandomOpinion
                 </p>
             </div>
         </div>

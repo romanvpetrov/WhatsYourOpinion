@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WhatsYourOpinion.Pages
+namespace Data.Pages
 {
     public class PrivacyModel : PageModel
     {

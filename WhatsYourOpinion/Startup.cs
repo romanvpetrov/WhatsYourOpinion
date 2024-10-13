@@ -8,11 +8,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WhatsYourOpinion.Contexts;
+using Data.Contexts;
 using Microsoft.EntityFrameworkCore.InMemory;
 using Microsoft.EntityFrameworkCore;
+using Core.Interfaces;
+using Data.Repositories;
 
-namespace WhatsYourOpinion
+namespace Data
 {
     public class Startup
     {
@@ -27,10 +29,11 @@ namespace WhatsYourOpinion
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+            services.AddScoped<IOpinionRepository, OpinionRepository>();
+            services.AddScoped<ITopicRepository, TopicRepository>();
             services.AddDbContext<OpinionContext>(options => options.UseInMemoryDatabase("Opinions"), ServiceLifetime.Singleton);
             //services.AddDbContext<OpinionContext>(options => options.UseSqlServer(Configuration.GetConnectionString("OpinionDatabase")));
             services.AddMvc();
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

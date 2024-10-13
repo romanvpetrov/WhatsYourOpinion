@@ -1,18 +1,18 @@
 ﻿@page
-@model WhatsYourOpinion.Pages.AnswerModel
+@model Data.Pages.AnswerModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "What's your opinion on " + Model.Opinion.Topic.Title + "?";
+    ViewData["Title"] = "What's your opinion on " + Model.TopicName + "?";
 }
 <div class="row">
     <div class="col-md-6 offset-md-3">
-        <h2 class="title text-center"> What's your opinion on @(Model.Opinion.Topic.Title)?</h2>
+        <h2 class="title text-center"> What's your opinion on @(Model.TopicName)?</h2>
     </div>
     <div class="col-md-6 offset-md-3">
         <form id="opinionForm" method="post">
-            <textarea name="Opinion.Comment" class="form-control"></textarea>
-            <input type="hidden" name="Opinion.TopicId" value="@Model.Opinion.Topic.Id" />
+            <textarea name="Opinion" class="form-control"></textarea>
+            <input type="hidden" name="TopicName" value="@Model.TopicName" />
             <input class="btn btn-primary" type="submit" />
         </form>
     </div>

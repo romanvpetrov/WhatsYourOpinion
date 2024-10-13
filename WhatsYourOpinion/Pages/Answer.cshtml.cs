@@ -2,40 +2,57 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using WhatsYourOpinion.Contexts;
-using WhatsYourOpinion.Models;
+using Core.Interfaces;
+using Core.Entities;
 
-namespace WhatsYourOpinion.Pages
+namespace Data.Pages
 {
     public class AnswerModel : PageModel
     {
-        OpinionContext Context { get; set; }
+        IOpinionRepository Repository { get; set; }
+        ITopicRepository TopicRepository { get; set; }
 
         [BindProperty]
-        public Opinion Opinion { get; set; }
+        public string Opinion { get; set; }
         [BindProperty]
-        public Topic Topic { get; set; }
+        public string TopicName { get; set; }
 
-        public AnswerModel(OpinionContext context)
+        public AnswerModel(IOpinionRepository repository, ITopicRepository topicRepository)
         {
-            Context = context;
-            Opinion = new Opinion();
-            Topic = new Topic();
+            Repository = repository;
+            TopicRepository = topicRepository;
         }
 
         public void OnGet(string topic)
         {
-            Opinion.Topic = Context.Topics.Where(x => x.Title == topic).FirstOrDefault();
+            var result = TopicRepository.GetTopic(topic);
+            if (result.Success)
+            {
+                TopicName = result.Value.Name;
+                Opinion = "";
+            }
+            else
+            {
+                //TODO: need to figure out how to show to user
+            }
         }
 
         public IActionResult OnPost()
         {
             if (ModelState.IsValid)
             {
-                Context.Add(Opinion);
-                Context.SaveChanges();
-                Opinion = Context.Opinions.OrderByDescending(x => x.Id).Include(x => x.Topic).FirstOrDefault();
-                return RedirectToPage("./Response", new { topic = Opinion.Topic.Title });
+                var topicResult = TopicRepository.GetTopic(TopicName);
+
+                if (topicResult.Success) {
+                    Topic topic = topicResult.Value;
+                    var opinion = new Opinion(Opinion, topic);
+
+                    Repository.Add(opinion);
+                    return RedirectToPage("./Response", new { topic = topic.Name });
+                }
+
+                
+                
             }
 
             return RedirectToPage("./Index");

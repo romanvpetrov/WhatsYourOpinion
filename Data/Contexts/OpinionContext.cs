@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WhatsYourOpinion.Models;
+using Data.Models;
 
-namespace WhatsYourOpinion.Contexts
+namespace Data.Contexts
 {
     public class OpinionContext : DbContext
     {

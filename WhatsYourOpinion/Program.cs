@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WhatsYourOpinion
+namespace Data
 {
     public class Program
     {
@@ -17,10 +17,12 @@ namespace WhatsYourOpinion
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
+            
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+        
     }
 }
